@@ -35,7 +35,7 @@ class DateList extends StatelessWidget {
               ),
             )),
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 15.0),
           const DatePlaceHolderWidget()
         ],
       ),

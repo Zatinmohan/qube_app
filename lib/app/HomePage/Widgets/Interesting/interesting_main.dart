@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:qube_app/Model/youtube_model.dart';
+import 'package:qube_app/app/HomePage/Controllers/main_page_controller.dart';
 import 'package:qube_app/misc/colors.dart';
 
 class InterestingPart extends StatelessWidget {
@@ -7,9 +9,10 @@ class InterestingPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = Get.find<MainPageController>();
     return SizedBox(
       width: context.width,
-      height: context.width * 0.5,
+      height: context.width * 0.9,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,6 +31,47 @@ class InterestingPart extends StatelessWidget {
                 color: Colors.grey,
                 fontSize: context.width * 0.045,
               )),
+          const SizedBox(height: 5.0),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: videoDetails.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: context.width * 0.6,
+                    height: context.width * 0.4,
+                    child: GestureDetector(
+                      onTap: () => _controller.openVideo(index),
+                      child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Stack(
+                            children: [
+                              Opacity(
+                                opacity: 0.8,
+                                child: Image.network(
+                                  _controller.videoThumbnail(index),
+                                  fit: BoxFit.cover,
+                                  height: context.width,
+                                ),
+                              ),
+                              Center(
+                                  child: Image.asset(
+                                "assets/youtube.png",
+                                width: context.width * 0.12,
+                              )),
+                            ],
+                          )),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
         ],
       ),
     );

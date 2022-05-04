@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:qube_app/API/api_main.dart';
 import 'package:qube_app/Model/feeling_model.dart';
+import 'package:qube_app/Model/youtube_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 // Used with SateMixin functionality that will handle the API calls without using FutureBuilder
 
@@ -9,6 +12,7 @@ class MainPageController extends GetxController
   RxInt dateIndex = 0.obs;
   late Rx<FeelingHabitModel> data = FeelingHabitModel().obs;
   RxString finalDate = "10 Jun, 2022".obs;
+  RxList<YoutubeModel> videoData = videoDetails.obs;
 
   @override
   void onInit() {
@@ -24,6 +28,18 @@ class MainPageController extends GetxController
     }, onError: (err) {
       change(null, status: RxStatus.error(err.toString()));
     });
+  }
+
+  //Fetching the image from the youtube
+  String videoThumbnail(int index) => videoData[index].image!;
+
+  void openVideo(int index) async {
+    if (await canLaunchUrlString(videoDetails[index].name!)) {
+      await launchUrlString(videoDetails[index].name!);
+    } else {
+      Get.snackbar("Error!", "Can't open Video, Try again later",
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 
   // This is for checking if the right card is been selected.
